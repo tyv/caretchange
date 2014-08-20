@@ -1,7 +1,7 @@
 caretchange
 ===========
 
-Jquery 'caretchange' event plugin for handling caret position change in inputs.
+jQuery 'caretchange' event plugin for handling caret position change in inputs.
 
 ```
 $('.my-input').on('caretchange', myHandler);
