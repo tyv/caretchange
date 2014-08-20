@@ -4,13 +4,13 @@ var caretChange = $.event.special.caretchange = {
 
     setup: function() {
 
-        $(this).bind('keydown click focusin', caretChange.handler);
+        $(this).bind('keyup click focusin', caretChange.handler);
 
     },
 
     teardown: function() {
 
-        $(this).unbind('keydown click focusin', caretChange.handler);
+        $(this).unbind('keyup click focusin', caretChange.handler);
 
     },
 
@@ -18,11 +18,31 @@ var caretChange = $.event.special.caretchange = {
 
         var savedType = e.type;
 
-        e.type = 'caretchange';
+        if (caretChange._isCaretChanged(e)) {
 
-        $.event.handle.apply(this, arguments);
+            e.type = 'caretchange';
+            $.event.handle.apply(this, arguments);
+            e.type = savedType;
 
-        e.type = savedType;
+        }
+    },
+
+    _isCaretChanged: function(e) {
+
+        var result = false,
+            $el = $(e.target),
+            newPos = e.target.selectionStart;
+
+        if (newPos != $el.data('last-pos')) {
+
+            $el.data('last-pos', newPos);
+
+            result = true;
+
+        }
+
+        return result;
+
     }
 
 };
