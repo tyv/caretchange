@@ -18,18 +18,21 @@ var caretChange = $.event.special.caretchange = {
 
         var savedType = e.type,
             $el = $(e.target),
+            doNotCheckCaretChange = $el.data('do-not-check-caret-change'),
             lastStartPos = $el.data('lastStartPos'),
             lastEndPos = $el.data('lastEndPos'),
             newStartPos = e.target.selectionStart,
             newEndPos = e.target.selectionEnd;
 
-        if (newStartPos != lastStartPos || newEndPos != lastEndPos) {
+        if ( doNotCheckCaretChange ||
+                newStartPos != lastStartPos ||
+                    newEndPos != lastEndPos ) {
 
             e.type = 'caretchange';
 
             e.caretchangeData = {
-                currentStartPos: newStartPos,
-                currentEndPos: newEndPos,
+                currentSelStart: newStartPos,
+                currentSelEnd: newEndPos,
                 prevSelStart: lastStartPos,
                 prevSelEnd: lastEndPos
             };
@@ -40,8 +43,7 @@ var caretChange = $.event.special.caretchange = {
             });
 
             // http://stackoverflow.com/questions/15653917/jquery-1-9-1-event-handle-apply-alternative
-            $.event.handle = $.event.handle || $.event.dispatch;
-            $.event.handle.apply(this, arguments);
+            ($.event.handle || $.event.dispatch).apply(this, arguments);
 
             e.type = savedType;
 

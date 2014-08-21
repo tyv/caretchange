@@ -17,15 +17,17 @@
 	<title>caretchagne jQuery event demo page</title>
 </head>
 <body>
-	<input>
+	<input><br>
+	data-do-not-check-caret-change="true" : <input data-do-not-check-caret-change="true">
 	<pre class="output"></pre>
 
 	<script>
-		var $output = $('.output');
+		var counter = 0,
+			$output = $('.output');
 
 		$('input').on('caretchange', function(e) {
 
-			$output.text(JSON.stringify(e.caretchangeData));
+			$output.text('event No.' + counter++ + ' ' + JSON.stringify(e.caretchangeData));
 
 		});
 	</script>
